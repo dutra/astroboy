@@ -7,7 +7,8 @@ defmodule Astroboy.Mixfile do
       version: "0.1.0",
       elixir: "~> 1.5",
       start_permanent: Mix.env == :prod,
-      deps: deps()
+      deps: deps(),
+      package: package()
     ]
   end
 
@@ -33,16 +34,6 @@ defmodule Astroboy.Mixfile do
       licenses: ["Apache 2.0"],
       links: %{"GitHub" => "https://github.com/dutra/astroboy"}
     ]
-  end
-
-  def project do
-    [app: :astroboy,
-     version: "0.0.1",
-     elixir: "~> 1.0",
-     build_embedded: Mix.env == :prod,
-     start_permanent: Mix.env == :prod,
-     deps: deps,
-     package: package ]
   end
 
 end
