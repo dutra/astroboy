@@ -1,6 +1,6 @@
-defmodule Astroboy do
+defmodule Kepler do
   @moduledoc """
-  Documentation for Astroboy.
+  Documentation for Kepler.
   """
 
   @doc """
@@ -8,7 +8,7 @@ defmodule Astroboy do
 
   ## Examples
 
-      iex> Astroboy.hello
+      iex> Kepler.hello
       :world
 
   """

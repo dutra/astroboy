@@ -1,9 +1,9 @@
-defmodule Astroboy.Mixfile do
+defmodule Kepler.Mixfile do
   use Mix.Project
 
   def project do
     [
-      app: :astroboy,
+      app: :kepler,
       version: "0.0.1",
       elixir: "~> 1.5",
       start_permanent: Mix.env == :prod,
@@ -30,7 +30,7 @@ defmodule Astroboy.Mixfile do
 
   defp description do
     """
-    Astroboy is a library in progress that aims at implementing methods to calculate the position of Planets, Sun and Moon.
+    Kepler is a library in progress that aims at implementing methods to calculate the position of Planets, Sun and Moon.
     It also offers useful functions to convert among coordinate systems and other astronomy-related calculations.
     """
   end
@@ -40,7 +40,7 @@ defmodule Astroboy.Mixfile do
       files: ["lib", "mix.exs", "README*", "LICENSE*"],
       maintainers: ["Isaque Dutra"],
       licenses: ["Apache 2.0"],
-      links: %{"GitHub" => "https://github.com/dutra/astroboy"}
+      links: %{"GitHub" => "https://github.com/dutra/kepler"}
     ]
   end
 
