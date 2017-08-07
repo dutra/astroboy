@@ -8,7 +8,8 @@ defmodule Astroboy.Mixfile do
       elixir: "~> 1.5",
       start_permanent: Mix.env == :prod,
       deps: deps(),
-      package: package()
+      package: package(),
+      description: description()
     ]
   end
 
@@ -27,9 +28,16 @@ defmodule Astroboy.Mixfile do
     ]
   end
 
+  defp description do
+    """
+    Astroboy is a library in progress that aims at implementing methods to calculate the position of Planets, Sun and Moon.
+    It also offers useful functions to convert among coordinate systems and other astronomy-related calculations.
+    """
+  end
+
   defp package do
     [
-      files: ["lib", "mix.exs", "README", "LICENSE*"],
+      files: ["lib", "mix.exs", "README*", "LICENSE*"],
       maintainers: ["Isaque Dutra"],
       licenses: ["Apache 2.0"],
       links: %{"GitHub" => "https://github.com/dutra/astroboy"}
