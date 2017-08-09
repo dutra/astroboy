@@ -1,6 +1,12 @@
 defmodule Julian do
   defstruct [:day]
 
+  @typedoc """
+  Type that represents a Date defined by Julian days.
+  """
+
+  @type t :: %Julian{day: float}
+
   def is_gregorian(year, month, day) do
     (year > 1_582 and month > 10 and day > 15)
   end

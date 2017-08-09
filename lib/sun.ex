@@ -1,4 +1,5 @@
 defmodule Sun do
+
   # values for 2010 epoch
   @ecliptic_longitude 4.8791937
   @ecliptic_longitude_perigee 4.9412442
@@ -16,8 +17,8 @@ defmodule Sun do
     ecliptic_longitude = :math.fmod(ecliptic_longitude + n*2*:math.pi, 2*:math.pi)
     ecliptic_latitude = 0
 
-    %Coordinates.Ecliptic{latitude: ecliptic_latitude,
-                          longitude: ecliptic_longitude}
+    %Coordinates.Ecliptic{latitude: %Angle{radians: ecliptic_latitude},
+                          longitude: %Angle{radians: ecliptic_longitude}}
 
   end
 end

@@ -4,13 +4,16 @@ defmodule SunTest do
 
   test "Sun position on 2003/07/27 00:00" do
 
-    %Coordinates.Ecliptic{latitude: latitude, longitude: longitude} = Sun.get_position({{2003, 7, 27}, {0, 0, 0}})
+    %Coordinates.Ecliptic{latitude: %Angle{radians: latitude},
+                          longitude: %Angle{radians: longitude}} = Sun.get_position({{2003, 7, 27}, {0, 0, 0}})
 
     assert_in_delta latitude, 0, 0.0001
     assert_in_delta longitude, 2.15689, 0.0001
 
     jd = Julian.init({{2003, 7, 27}, {0, 0, 0}})
-    %Coordinates.Equatorial{declination: declination, ra: ra} = Coordinates.to_equatorial(%Coordinates.Ecliptic{latitude: latitude, longitude: longitude}, jd)
+    %Coordinates.Equatorial{declination: %Angle{radians: declination},
+                            ra: %Angle{radians: ra}}
+    = Coordinates.to_equatorial(%Coordinates.Ecliptic{latitude: %Angle{radians: latitude}, longitude: %Angle{radians: longitude}}, jd)
 
     assert_in_delta declination, 0.338, 0.001
     assert_in_delta ra, 2.197, 0.001
@@ -21,7 +24,8 @@ defmodule SunTest do
     c = Sun.get_position({{2015, 12, 25}, {20, 0, 0}})
     jd = Julian.init({{2015, 12, 25}, {20, 0, 0}})
 
-    %Coordinates.Equatorial{declination: declination, ra: ra} = Coordinates.to_equatorial(c, jd)
+    %Coordinates.Equatorial{declination: %Angle{radians: declination},
+                            ra: %Angle{radians: ra}} = Coordinates.to_equatorial(c, jd)
     assert_in_delta declination, 5.875, 0.001
     assert_in_delta ra, 4.783, 0.001
   end

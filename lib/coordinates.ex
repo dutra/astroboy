@@ -8,15 +8,18 @@ defmodule Coordinates do
     # %Coordinates.Ecliptic{latitude: latitude, longitude: longitude}
   end
 
-  def to_equatorial(%Coordinates.Ecliptic{latitude: beta, longitude: lambda}, %Julian{day: day}) do
+  @spec to_equatorial(Coordinates.Ecliptic.t, Julian.t) :: Coordinates.Equatorial.t
+  def to_equatorial(%Coordinates.Ecliptic{latitude: %Angle{radians: beta},
+                                          longitude: %Angle{radians: lambda}}, %Julian{day: day}) do
     epoch = Epoch.init(%Julian{day: day})
     obliquity = obliquity_ecliptic(epoch)
     alpha = :math.atan2(:math.sin(lambda)*:math.cos(obliquity) - :math.tan(beta)*:math.sin(obliquity), :math.cos(lambda))
-    alpha = normalize(alpha)
+    alpha = Angle.normalize(radians: alpha)
     delta = :math.asin(:math.sin(beta)*:math.cos(obliquity) + :math.cos(beta)*:math.sin(obliquity)*:math.sin(lambda))
-    delta = normalize(delta)
+    delta = Angle.normalize(radians: delta)
 
-    %Coordinates.Equatorial{declination: delta, ra: alpha}
+    %Coordinates.Equatorial{declination: %Angle{radians: delta},
+                            ra: %Angle{radians: alpha}}
   end
 
   defp obliquity_ecliptic(%Epoch{day: day}) do
@@ -25,22 +28,8 @@ defmodule Coordinates do
     t = mjd/36_525.0
     de = 46.815*t + 0.0006*:math.pow(t, 2) - 0.00181*:math.pow(t, 3) # in arcsec
     de = 23.439_292 - de / 3600 # in degrees
-    de = to_radians(de) # in radians
+    de = Angle.to_radians(degrees: de) # in radians
     de
   end
 
-  defp to_radians(degrees) do
-    degrees * :math.pi / 180
-  end
-
-  defp to_degrees(radians) do
-    radians / :math.pi * 180
-  end
-
-  defp normalize(radians) do
-    n = abs(trunc(radians/(2*:math.pi))) + 1
-    radians = :math.fmod(radians + n*2*:math.pi, 2*:math.pi)
-    radians
-
-  end
 end
