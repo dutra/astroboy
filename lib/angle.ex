@@ -20,6 +20,10 @@ defmodule Angle do
     radians / :math.pi * 180
   end
 
+  def to_degrees(radians: radians) do
+    Angle.normalize(radians: radians) / :math.pi * 180
+  end
+
   def normalize(%Angle{radians: radians}) do
     radians = if radians < 0 do
       n = abs(trunc(radians/(2*:math.pi))) + 1
