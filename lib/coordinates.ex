@@ -4,8 +4,22 @@ defmodule Coordinates do
     %Coordinates.Ecliptic{latitude: latitude, longitude: longitude}
   end
 
-  def to_ecliptic(%Coordinates.Equatorial{declination: alpha, ra: delta}) do
-    # %Coordinates.Ecliptic{latitude: latitude, longitude: longitude}
+  @spec to_ecliptic(Coordinates.Equatorial.t, Julian.t) :: Coordinates.Ecliptic.t
+  def to_ecliptic(%Coordinates.Equatorial{declination: %Angle{radians: delta},
+                                          ra: %Angle{radians: alpha}}, %Julian{day: day}) do
+    epoch = Epoch.init(%Julian{day: day})
+    obliquity = obliquity_ecliptic(epoch)
+
+    lambda = :math.atan2(:math.sin(alpha)*:math.cos(obliquity) + :math.tan(delta)*:math.sin(obliquity),
+      :math.cos(alpha))
+
+    beta = :math.asin(:math.sin(delta)*:math.cos(obliquity) - :math.cos(delta)*:math.sin(obliquity)*:math.sin(alpha))
+
+    lambda = Angle.normalize(radians: lambda)
+    beta = Angle.normalize(radians: beta)
+
+    %Coordinates.Ecliptic{latitude: %Angle{radians: beta},
+      longitude: %Angle{radians: lambda}}
   end
 
   @spec to_equatorial(Coordinates.Ecliptic.t, Julian.t) :: Coordinates.Equatorial.t
