@@ -21,7 +21,7 @@ defmodule Angle do
   end
 
   def to_degrees(radians: radians) do
-    Angle.normalize(radians: radians) / :math.pi * 180
+    radians / :math.pi * 180
   end
 
   def normalize(%Angle{radians: radians}) do
@@ -29,7 +29,7 @@ defmodule Angle do
       n = abs(trunc(radians/(2*:math.pi))) + 1
       :math.fmod(radians + n*2*:math.pi, 2*:math.pi)
     else
-      radians
+      :math.fmod(radians, 2*:math.pi)
     end
 
     %Angle{radians: radians}
@@ -40,9 +40,20 @@ defmodule Angle do
       n = abs(trunc(radians/(2*:math.pi))) + 1
       :math.fmod(radians + n*2*:math.pi, 2*:math.pi)
     else
+      :math.fmod(radians, 2*:math.pi)
+    end
+
+    radians
+  end
+
+  def normalize_90_90(radians: radians) do
+    radians = if radians > :math.pi do
+      radians - 2*:math.pi
+    else
       radians
     end
 
     radians
   end
+
 end

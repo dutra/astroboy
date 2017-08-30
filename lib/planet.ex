@@ -1,15 +1,15 @@
 defmodule Planet do
 
-  @period_orbit %{mercury: 0.240_85, earth: 0.999_996, jupiter: 11.857_911, saturn: 29.310_579} # (tropical years)
-  @longitude_at_epoch %{mercury: 1.31889, earth: 1.737_593, jupiter: 5.897_767, saturn: 3.008_918} # (radians)
-  @longitude_perihelion %{mercury: 1.354_6, earth: 1.801_28, jupiter: 0.255_9, saturn: 1.563} # (radians)
-  @eccentricity_orbit %{mercury: 0.205_627, earth: 0.016_671, jupiter: 0.048_907, saturn: 0.053_853} #
-  @semi_major_axis %{mercury: 0.387_098, earth: 0.999_985, jupiter: 5.202_78, saturn: 9.511_34} # AU
-  @orbital_inclination %{mercury: 0.122_26, jupiter: 0.0227_5, saturn: 0.043_41} # radians
-  @longitude_ascending_node %{mercury: 0.8456, jupiter: 1.7557, saturn: 1.985_3} # radians
-  # @angular_diameter_au %{mercury: 6.74, jupiter: 196.74, saturn: 165.60} # arcsec
-  # @visual_magnitude_au %{mercury: -0.42, jupiter: -9.4, saturn: -8.88} #
-  @outer_planets [:jupiter, :saturn]
+  @period_orbit %{mercury: 0.240_85, venus: 0.615_207, earth: 0.999_996, mars: 1.880_765, jupiter: 11.857_911, saturn: 29.310_579, uranus: 84.039492, neptune: 165.84539} # (tropical years)
+  @longitude_at_epoch %{mercury: 1.31889, venus: 4.752539, earth: 1.737_593, mars: 1.904_092, jupiter: 5.897_767, saturn: 3.008_918, uranus: 4.7309444, neptune: 5.7053963} # (radians)
+  @longitude_perihelion %{mercury: 1.354_6, venus: 2.296, earth: 1.801_28, mars: 5.868_1, jupiter: 0.255_9, saturn: 1.563, uranus: 3.0174096, neptune: 0.40265} # (radians)
+  @eccentricity_orbit %{mercury: 0.205_627, venus: 0.006_812, earth: 0.016_671, mars: 0.093_348, jupiter: 0.048_907, saturn: 0.053_853, uranus: 0.046321, neptune: 0.010483} #
+  @semi_major_axis %{mercury: 0.387_098, venus: 0.723_32, earth: 0.999_985, mars: 1.523_689, jupiter: 5.202_78, saturn: 9.511_34, uranus: 19.21814, neptune: 30.1985} # AU
+  @orbital_inclination %{mercury: 0.122_26, venus: 0.05925, mars: 0.03228, jupiter: 0.0227_5, saturn: 0.043_41, uranus: 0.0134924, neptune: 0.03085} # radians
+  @longitude_ascending_node %{mercury: 0.8456, venus: 1.3399, mars: 0.8662, jupiter: 1.7557, saturn: 1.985_3, uranus: 1.2902689, neptune: 2.3017} # radians
+  # @angular_diameter_au %{mercury: 6.74, venus: 16.92, mars: 9.36, jupiter: 196.74, saturn: 165.60, uranus: 65.80, neptune: 62.20} # arcsec
+  # @visual_magnitude_au %{mercury: -0.42, venus: -4.40, mars: -1.52, jupiter: -9.4, saturn: -8.88, uranus: -7.19, neptune: -6.87} #
+  @outer_planets [:mars, :jupiter, :saturn, :uranus, :neptune]
 
 
   def get_position(date: {{year, month, day}, {hour, minute, second}}, planet: planet) do
@@ -47,11 +47,11 @@ defmodule Planet do
           earth_radius_vector_length - projected_radius_vector_length*:math.cos(earth_heliocentric_longitude - projected_heliocentric_longitude)) + earth_heliocentric_longitude + :math.pi
     end
 
-    latitude = :math.atan2(projected_radius_vector_length*:math.tan(heliocentric_latitude)*:math.sin(longitude-projected_heliocentric_longitude),
-    earth_radius_vector_length*:math.sin(projected_heliocentric_longitude-earth_heliocentric_longitude))
+    latitude = :math.atan((projected_radius_vector_length*:math.tan(heliocentric_latitude)*:math.sin(longitude-projected_heliocentric_longitude))/(earth_radius_vector_length*:math.sin(projected_heliocentric_longitude-earth_heliocentric_longitude)))
+
 
     longitude = Angle.normalize(radians: longitude)
-    latitude = Angle.normalize(radians: latitude)
+    latitude = Angle.normalize_90_90(radians: latitude)
 
     %Coordinates.Ecliptic{latitude: %Angle{radians: latitude},
                           longitude: %Angle{radians: longitude}}

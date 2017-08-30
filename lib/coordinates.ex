@@ -16,7 +16,7 @@ defmodule Coordinates do
     beta = :math.asin(:math.sin(delta)*:math.cos(obliquity) - :math.cos(delta)*:math.sin(obliquity)*:math.sin(alpha))
 
     lambda = Angle.normalize(radians: lambda)
-    beta = Angle.normalize(radians: beta)
+    # beta = Angle.normalize(radians: beta)
 
     %Coordinates.Ecliptic{latitude: %Angle{radians: beta},
       longitude: %Angle{radians: lambda}}
@@ -30,7 +30,7 @@ defmodule Coordinates do
     alpha = :math.atan2(:math.sin(lambda)*:math.cos(obliquity) - :math.tan(beta)*:math.sin(obliquity), :math.cos(lambda))
     alpha = Angle.normalize(radians: alpha)
     delta = :math.asin(:math.sin(beta)*:math.cos(obliquity) + :math.cos(beta)*:math.sin(obliquity)*:math.sin(lambda))
-    delta = Angle.normalize(radians: delta)
+    delta = Angle.normalize_90_90(radians: delta)
 
     %Coordinates.Equatorial{declination: %Angle{radians: delta},
                             ra: %Angle{radians: alpha}}

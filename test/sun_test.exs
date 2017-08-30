@@ -26,7 +26,7 @@ defmodule SunTest do
 
     %Coordinates.Equatorial{declination: %Angle{radians: declination},
                             ra: %Angle{radians: ra}} = Coordinates.to_equatorial(c, jd)
-    assert_in_delta declination, 5.875, 0.001
+    assert_in_delta declination, -0.4082, 0.001
     assert_in_delta ra, 4.783, 0.001
   end
 end
